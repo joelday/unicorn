@@ -635,44 +635,6 @@ would take effect again.
 See sample_ctl.c for a detailed example.
 
 */
-#define uc_ctl_get_mode(uc, mode)                                              \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_MODE, 1), (mode))
-#define uc_ctl_get_page_size(uc, ptr)                                          \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_PAGE_SIZE, 1), (ptr))
-#define uc_ctl_set_page_size(uc, page_size)                                    \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_PAGE_SIZE, 1), (page_size))
-#define uc_ctl_get_arch(uc, arch)                                              \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_ARCH, 1), (arch))
-#define uc_ctl_get_timeout(uc, ptr)                                            \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_TIMEOUT, 1), (ptr))
-#define uc_ctl_exits_enable(uc)                                                \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_USE_EXITS, 1), 1)
-#define uc_ctl_exits_disable(uc)                                               \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_USE_EXITS, 1), 0)
-#define uc_ctl_get_exits_cnt(uc, ptr)                                          \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_EXITS_CNT, 1), (ptr))
-#define uc_ctl_get_exits(uc, buffer, len)                                      \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_EXITS, 2), (buffer), (len))
-#define uc_ctl_set_exits(uc, buffer, len)                                      \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_EXITS, 2), (buffer), (len))
-#define uc_ctl_get_cpu_model(uc, model)                                        \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_CPU_MODEL, 1), (model))
-#define uc_ctl_set_cpu_model(uc, model)                                        \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_CPU_MODEL, 1), (model))
-#define uc_ctl_remove_cache(uc, address, end)                                  \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TB_REMOVE_CACHE, 2), (address), (end))
-#define uc_ctl_request_cache(uc, address, tb)                                  \
-    uc_ctl(uc, UC_CTL_READ_WRITE(UC_CTL_TB_REQUEST_CACHE, 2), (address), (tb))
-#define uc_ctl_flush_tb(uc) uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TB_FLUSH, 0))
-#define uc_ctl_flush_tlb(uc) uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TLB_FLUSH, 0))
-#define uc_ctl_tlb_mode(uc, mode)                                              \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TLB_TYPE, 1), (mode))
-#define uc_ctl_get_tcg_buffer_size(uc, size)                                   \
-    uc_ctl(uc, UC_CTL_READ(UC_CTL_TCG_BUFFER_SIZE, 1), (size))
-#define uc_ctl_set_tcg_buffer_size(uc, size)                                   \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TCG_BUFFER_SIZE, 1), (size))
-#define uc_ctl_context_mode(uc, mode)                                          \
-    uc_ctl(uc, UC_CTL_WRITE(UC_CTL_CONTEXT_MODE, 1), (mode))
 
 // Opaque storage for CPU context, used with uc_context_*()
 struct uc_context;
@@ -761,6 +723,66 @@ uc_err uc_query(uc_engine *uc, uc_query_type type, size_t *result);
 */
 UNICORN_EXPORT
 uc_err uc_ctl(uc_engine *uc, uc_control_type control, ...);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_mode(uc_engine *uc, int *mode);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_page_size(uc_engine *uc, uint32_t *page_size);
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_page_size(uc_engine *uc, uint32_t page_size);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_arch(uc_engine *uc, int *arch);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_timeout(uc_engine *uc, uint64_t *timeout);
+
+UNICORN_EXPORT
+uc_err uc_ctl_exits_enable(uc_engine *uc);
+
+UNICORN_EXPORT
+uc_err uc_ctl_exits_disable(uc_engine *uc);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_exits_cnt(uc_engine *uc, size_t *count);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_exits(uc_engine *uc, uint64_t *exits_buffer, size_t len);
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_exits(uc_engine *uc, uint64_t *exits_buffer, size_t len);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_cpu_model(uc_engine *uc, int *model);
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_cpu_model(uc_engine *uc, int model);
+
+UNICORN_EXPORT
+uc_err uc_ctl_remove_cache(uc_engine *uc, uint64_t address, uint64_t end);
+
+UNICORN_EXPORT
+uc_err uc_ctl_request_cache(uc_engine *uc, uint64_t address, uc_tb *tb);
+
+UNICORN_EXPORT
+uc_err uc_ctl_flush_tb(uc_engine *uc);
+
+UNICORN_EXPORT
+uc_err uc_ctl_flush_tlb(uc_engine *uc);
+
+UNICORN_EXPORT
+uc_err uc_ctl_tlb_mode(uc_engine *uc, int mode);
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_tcg_buffer_size(uc_engine *uc, uint32_t *size);
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_tcg_buffer_size(uc_engine *uc, uint32_t size);
+
+UNICORN_EXPORT
+uc_err uc_ctl_context_mode(uc_engine *uc, int mode);
 
 /*
  Report the last error number when some API function fails.

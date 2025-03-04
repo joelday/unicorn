@@ -2915,6 +2915,126 @@ static uc_err uc_restore_latest_snapshot(struct uc_struct *uc)
     return UC_ERR_OK;
 }
 
+UNICORN_EXPORT
+uc_err uc_ctl_get_mode(uc_engine *uc, int *mode)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_MODE, 1), mode);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_page_size(uc_engine *uc, uint32_t *page_size)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_PAGE_SIZE, 1), page_size);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_page_size(uc_engine *uc, uint32_t page_size)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_PAGE_SIZE, 1), page_size);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_arch(uc_engine *uc, int *arch)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_ARCH, 1), arch);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_timeout(uc_engine *uc, uint64_t *timeout)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_TIMEOUT, 1), timeout);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_exits_enable(uc_engine *uc)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_USE_EXITS, 1), 1);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_exits_disable(uc_engine *uc)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_USE_EXITS, 1), 0);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_exits_cnt(uc_engine *uc, size_t *count)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_EXITS_CNT, 1), count);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_exits(uc_engine *uc, uint64_t *exits_buffer, size_t len)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_UC_EXITS, 2), exits_buffer, len);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_exits(uc_engine *uc, uint64_t *exits_buffer, size_t len)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_UC_EXITS, 2), exits_buffer, len);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_cpu_model(uc_engine *uc, int *model)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_CPU_MODEL, 1), model);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_cpu_model(uc_engine *uc, int model)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_CPU_MODEL, 1), model);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_remove_cache(uc_engine *uc, uint64_t address, uint64_t end)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TB_REMOVE_CACHE, 2), address, end);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_request_cache(uc_engine *uc, uint64_t address, uc_tb *tb)
+{
+    return uc_ctl(uc, UC_CTL_READ_WRITE(UC_CTL_TB_REQUEST_CACHE, 2), address, tb);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_flush_tb(uc_engine *uc)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TB_FLUSH, 0));
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_flush_tlb(uc_engine *uc)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TLB_FLUSH, 0));
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_tlb_mode(uc_engine *uc, int mode)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TLB_TYPE, 1), mode);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_get_tcg_buffer_size(uc_engine *uc, uint32_t *size)
+{
+    return uc_ctl(uc, UC_CTL_READ(UC_CTL_TCG_BUFFER_SIZE, 1), size);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_set_tcg_buffer_size(uc_engine *uc, uint32_t size)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_TCG_BUFFER_SIZE, 1), size);
+}
+
+UNICORN_EXPORT
+uc_err uc_ctl_context_mode(uc_engine *uc, int mode)
+{
+    return uc_ctl(uc, UC_CTL_WRITE(UC_CTL_CONTEXT_MODE, 1), mode);
+}
+
 #ifdef UNICORN_TRACER
 uc_tracer *get_tracer()
 {
